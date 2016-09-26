@@ -14,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.vinove.excelsheetapp.Model.PaperSheet;
 import com.example.vinove.excelsheetapp.Poi.ExcelSheet;
@@ -81,9 +82,12 @@ public class SurveyActivity extends FragmentActivity implements ScreenSlidePageF
                 takeScreenshot();
                 if(!rightControllButton.getText().toString().equalsIgnoreCase("Submit")) {
 
-                    if(resPos==mPager.getCurrentItem()){
-                        //Toast.makeText(getBaseContext(),result,Toast.LENGTH_SHORT).show();
-                    }
+                    /*if(resPos==mPager.getCurrentItem()){
+                        Toast.makeText(getBaseContext(), pageFragment.sendDataToActivity(mPager.getCurrentItem()), Toast.LENGTH_SHORT).show();
+                    }*/
+                    String data=    ps[mPager.getCurrentItem()+1].getResponseTypes();
+                    String res=pageFragment.sendDataToActivity(data);
+                    Toast.makeText(getBaseContext(), res, Toast.LENGTH_SHORT).show();
                     mPager.setCurrentItem(mPager.getCurrentItem() + 1);
                 }else {
                     ExcelSheet excelSheet=new ExcelSheet(getBaseContext());
@@ -93,6 +97,8 @@ public class SurveyActivity extends FragmentActivity implements ScreenSlidePageF
         });
 
     }
+
+    private ScreenSlidePageFragment pageFragment;
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
         PaperSheet[] ps;
@@ -104,7 +110,8 @@ public class SurveyActivity extends FragmentActivity implements ScreenSlidePageF
 
         @Override
         public Fragment getItem(int position) {
-            return ScreenSlidePageFragment.create(position);
+            pageFragment=ScreenSlidePageFragment.create(position);
+            return pageFragment;
         }
 
         @Override
